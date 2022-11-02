@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:maverick/themes/theme.dart';
+import 'package:maverick/widgets/gauge.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -11,12 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: mainTheme,
       home: const Root(),
     );
   }
@@ -27,11 +25,35 @@ class Root extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Color(0xFF1D202C), //or set color with: Color(0xFF0000FF)
+    ));
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Maverick"),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFF3B4259).withOpacity(.90),
+              const Color(0xFF2A2F40),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              SizedBox(
+                height: 530,
+                width: 530,
+                child: GaugeWidget(),
+              ),
+            ],
+          ),
+        ),
       ),
-      body: Center(child: Text("hey")),
     );
   }
 }
