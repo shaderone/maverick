@@ -1,12 +1,12 @@
 name: maverick
 description: Dashboard for Maverick E-Car
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: ">=2.18.2 <3.3.2"
 
 dependencies:
   cupertino_icons: ^1.0.2
@@ -21,7 +21,6 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
   uses-material-design: true
 
   assets:

@@ -36,7 +36,7 @@ class GaugeWidget extends StatelessWidget {
                   ),
                   const Positioned(
                     top: 13,
-                    left: 53,
+                    left: 50,
                     child: Text(
                       ("73%"),
                       style: TextStyle(
