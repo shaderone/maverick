@@ -96,7 +96,7 @@ class Root extends StatelessWidget {
                       DashCard(
                         cardTitle: "VOLTAGE",
                         cardContent: "220V",
-                        cardIcon: MdiIcons.speedometer,
+                        cardIcon: MdiIcons.flashTriangle,
                         isTemp: true,
                       ),
                       DashCard(
@@ -123,13 +123,13 @@ class Root extends StatelessWidget {
                       DashCard(
                         cardTitle: "BATTERY",
                         cardContent: "67",
-                        cardIcon: MdiIcons.speedometer,
+                        cardIcon: MdiIcons.sunThermometer,
                         isTemp: true,
                       ),
                       DashCard(
                         cardTitle: "MOTOR",
                         cardContent: "38",
-                        cardIcon: MdiIcons.speedometer,
+                        cardIcon: MdiIcons.sunThermometer,
                         isTemp: true,
                       ),
                       //SizedBox(height: 10),
