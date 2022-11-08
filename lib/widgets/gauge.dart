@@ -228,7 +228,7 @@ class GaugeWidget extends StatelessWidget {
                 width: 180,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF282D3E),
+                  color: const Color(0xFF1D202C),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Center(

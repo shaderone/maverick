@@ -55,33 +55,34 @@ class Root extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Positioned(
-                top: 25,
-                child: Column(
-                  children: [
-                    const Text(
-                      "MUSIC",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(height: 10),
-                    Card(
-                      color: const Color(0xff1D202C),
-                      child: SizedBox(
-                        width: 100,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: const LinearProgressIndicator(
-                            value: 0.4,
-                            backgroundColor: Color(0xff1D202C),
-                            color: Colors.blue,
-                            minHeight: 10,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              //->later
+              //Positioned(
+              //  top: 25,
+              //  child: Column(
+              //    children: [
+              //      const Text(
+              //        "MUSIC",
+              //        style: TextStyle(color: Colors.white),
+              //      ),
+              //      const SizedBox(height: 10),
+              //      Card(
+              //        color: const Color(0xff1D202C),
+              //        child: SizedBox(
+              //          width: 100,
+              //          child: ClipRRect(
+              //            borderRadius: BorderRadius.circular(10),
+              //            child: const LinearProgressIndicator(
+              //              value: 0.4,
+              //              backgroundColor: Color(0xff1D202C),
+              //              color: Colors.blue,
+              //              minHeight: 10,
+              //            ),
+              //          ),
+              //        ),
+              //      ),
+              //    ],
+              //  ),
+              //),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
