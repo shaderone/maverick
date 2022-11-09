@@ -4,10 +4,21 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:maverick/themes/theme.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class GaugeWidget extends StatelessWidget {
+class GaugeWidget extends StatefulWidget {
   const GaugeWidget({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<GaugeWidget> createState() => _GaugeWidgetState();
+}
+
+class _GaugeWidgetState extends State<GaugeWidget> {
+  String batteryPercent = "83";
+  double batteryLevel = 83; // level for blue stroke
+  String speedometerValue = "0";
+  String gearPosition = "N";
+  String odometerValue = "220";
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +45,12 @@ class GaugeWidget extends StatelessWidget {
                     "assets/vectors/battery_vector.png",
                     width: 135,
                   ),
-                  const Positioned(
+                  Positioned(
                     top: 13,
                     left: 50,
                     child: Text(
-                      ("73%"),
-                      style: TextStyle(
+                      ("$batteryPercent%"),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                       ),
@@ -88,17 +99,17 @@ class GaugeWidget extends StatelessWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [
-                          SizedBox(height: 10),
+                        children: [
+                          const SizedBox(height: 10),
                           Text(
-                            '90',
-                            style: TextStyle(
+                            speedometerValue,
+                            style: const TextStyle(
                               fontSize: 120,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'KM/H',
                             style: TextStyle(
                               height: 0.01,
@@ -121,10 +132,10 @@ class GaugeWidget extends StatelessWidget {
                             color: primaryColor,
                           ),
                         ),
-                        child: const Center(
+                        child: Center(
                             child: Text(
-                          "3",
-                          style: TextStyle(
+                          gearPosition,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 40,
                           ),
@@ -231,10 +242,10 @@ class GaugeWidget extends StatelessWidget {
                   color: const Color(0xFF1D202C),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    "200KM",
-                    style: TextStyle(
+                    "$odometerValue KM",
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
@@ -279,9 +290,9 @@ class GaugeWidget extends StatelessWidget {
             thicknessUnit: GaugeSizeUnit.factor,
             color: Color(0xFF222533),
           ),
-          pointers: const <GaugePointer>[
+          pointers: <GaugePointer>[
             RangePointer(
-              value: 75,
+              value: batteryLevel,
               width: 23.5,
               cornerStyle: CornerStyle.bothCurve,
               color: primaryColor,

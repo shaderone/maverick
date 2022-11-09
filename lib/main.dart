@@ -21,8 +21,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Root extends StatelessWidget {
+class Root extends StatefulWidget {
   const Root({super.key});
+
+  @override
+  State<Root> createState() => _RootState();
+}
+
+class _RootState extends State<Root> {
+  String voltage = "50.3";
+  String milage = "32";
+  String batteryTemperature = "43.4";
+  String motorTemperature = "39.8";
 
   @override
   Widget build(BuildContext context) {
@@ -88,21 +98,21 @@ class Root extends StatelessWidget {
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "ESTIMATIONS",
                         style: TextStyle(color: Colors.white),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       DashCard(
                         cardTitle: "VOLTAGE",
-                        cardContent: "220V",
+                        cardContent: voltage,
                         cardIcon: MdiIcons.flashTriangle,
                         isTemp: true,
                       ),
                       DashCard(
                         cardTitle: "MILAGE",
-                        cardContent: "53",
+                        cardContent: milage,
                         cardIcon: MdiIcons.speedometer,
                         isTemp: true,
                       ),
@@ -115,21 +125,21 @@ class Root extends StatelessWidget {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "TEMPERATURES",
                         style: TextStyle(color: Colors.white),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       DashCard(
                         cardTitle: "BATTERY",
-                        cardContent: "67",
+                        cardContent: batteryTemperature,
                         cardIcon: MdiIcons.sunThermometer,
                         isTemp: true,
                       ),
                       DashCard(
                         cardTitle: "MOTOR",
-                        cardContent: "38",
+                        cardContent: motorTemperature,
                         cardIcon: MdiIcons.sunThermometer,
                         isTemp: true,
                       ),
