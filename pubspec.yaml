@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_bluetooth_serial: ^0.4.0
   material_design_icons_flutter: ^5.0.6996
   syncfusion_flutter_gauges: ^20.3.50
 
