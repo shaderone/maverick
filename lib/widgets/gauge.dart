@@ -9,12 +9,16 @@ class GaugeWidget extends StatelessWidget {
   final double batteryPercent;
   final String odometer;
   final bool seatBelt;
+  final bool handBrake;
+  final String gear;
   const GaugeWidget({
     Key? key,
     required this.speed,
     required this.batteryPercent,
     required this.odometer,
     required this.seatBelt,
+    required this.handBrake,
+    required this.gear,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -54,7 +58,7 @@ class GaugeWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              positionFactor: 0.82,
+              positionFactor: 0.81,
               angle: 270,
             ),
             GaugeAnnotation(
@@ -71,7 +75,8 @@ class GaugeWidget extends StatelessWidget {
                     CupertinoIcons.light_max,
                     // CupertinoIcons.light_min,
                     size: 50,
-                    color: primaryColor,
+                    //color: primaryColor,
+                    color: Color(0xFF282D3E),
                   ),
                   SizedBox(width: 30),
                   Icon(
@@ -88,98 +93,106 @@ class GaugeWidget extends StatelessWidget {
               widget: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const SizedBox(height: 10),
-                          Text(
-                            speed,
-                            style: const TextStyle(
-                              fontSize: 120,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                  SizedBox(
+                    width: 303,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            const SizedBox(height: 10),
+                            Text(
+                              speed,
+                              style: const TextStyle(
+                                fontSize: 120,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'KM/H',
+                              style: TextStyle(
+                                height: 0.01,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFfB4B9CB),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 20),
+                        Container(
+                          width: 90,
+                          height: 90,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: const Color(0xFF282D3E),
+                            border: Border.all(
+                              width: 5,
+                              color: primaryColor,
                             ),
                           ),
-                          const Text(
-                            'KM/H',
-                            style: TextStyle(
-                              height: 0.01,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFfB4B9CB),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Text(
+                                gear,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 20),
-                      Container(
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: const Color(0xFF282D3E),
-                          border: Border.all(
-                            width: 5,
-                            color: primaryColor,
                           ),
                         ),
-                        child: const Center(
-                          child: Text(
-                            "N",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 40,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
               angle: 90,
               positionFactor: 0.07,
             ),
-            const GaugeAnnotation(
-              widget: Indicator(
-                child: Center(
-                  child: Icon(
-                    MdiIcons.seatbelt,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                ),
-              ),
-              angle: -23,
-              positionFactor: 1.325,
-            ),
-            const GaugeAnnotation(
+            //GaugeAnnotation(
+            //  widget: Indicator(
+            //    child: Center(
+            //      child: Icon(
+            //        MdiIcons.seatbelt,
+            //        color: seatBelt ? Colors.amber : Colors.white,
+            //        size: 32,
+            //      ),
+            //    ),
+            //  ),
+            //  angle: -23,
+            //  positionFactor: 1.325,
+            //),
+            //GaugeAnnotation(
+            //  widget: Indicator(
+            //    child: Center(
+            //      child: Icon(
+            //        MdiIcons.carBrakeHold,
+            //        color: handBrake ? Colors.amber : Colors.white,
+            //        size: 32,
+            //      ),
+            //    ),
+            //  ),
+            //  angle: -156,
+            //  positionFactor: 1.315,
+            //),
+            GaugeAnnotation(
               widget: Indicator(
                 child: Center(
                   child: Icon(
                     MdiIcons.carBrakeHold,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                ),
-              ),
-              angle: -156,
-              positionFactor: 1.315,
-            ),
-            const GaugeAnnotation(
-              widget: Indicator(
-                child: Center(
-                  child: Icon(
-                    MdiIcons.lightningBolt,
-                    // Icons.bolt,
-                    // Icons.battery_charging_full,
-                    // Icons.battery_alert_rounded,
-                    color: Colors.white,
+                    color: handBrake ? Colors.amber : Colors.white,
+                    //MdiIcons.lightningBolt,
+                    //// Icons.bolt,
+                    //// Icons.battery_charging_full,
+                    //// Icons.battery_alert_rounded,
+                    //color: Colors.white,
                     size: 32,
                   ),
                 ),
@@ -187,43 +200,45 @@ class GaugeWidget extends StatelessWidget {
               angle: -176,
               positionFactor: 1.325,
             ),
+            //GaugeAnnotation(
+            //  widget: Indicator(
+            //    child: Center(
+            //      child: Transform(
+            //        alignment: Alignment.center,
+            //        transform: Matrix4.rotationY(3.14), //pi value
+            //        child: const Icon(
+            //          MdiIcons.carDoor,
+            //          color: Colors.white,
+            //          size: 32,
+            //        ),
+            //      ),
+            //    ),
+            //  ),
+            //  // angle: -175, -- center
+            //  angle: -196,
+            //  positionFactor: 1.325,
+            //),
+            //const GaugeAnnotation(
+            //  widget: Indicator(
+            //    child: Center(
+            //      child: Icon(
+            //        MdiIcons.carDoor,
+            //        color: Colors.white,
+            //        size: 32,
+            //      ),
+            //    ),
+            //  ),
+            //  angle: 16,
+            //  positionFactor: 1.325,
+            //),
             GaugeAnnotation(
               widget: Indicator(
                 child: Center(
-                  child: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.rotationY(3.14), //pi value
-                    child: const Icon(
-                      MdiIcons.carDoor,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                  ),
-                ),
-              ),
-              // angle: -175, -- center
-              angle: -196,
-              positionFactor: 1.325,
-            ),
-            const GaugeAnnotation(
-              widget: Indicator(
-                child: Center(
                   child: Icon(
-                    MdiIcons.carDoor,
-                    color: Colors.white,
-                    size: 32,
-                  ),
-                ),
-              ),
-              angle: 16,
-              positionFactor: 1.325,
-            ),
-            const GaugeAnnotation(
-              widget: Indicator(
-                child: Center(
-                  child: Icon(
-                    MdiIcons.engine,
-                    color: Colors.white,
+                    MdiIcons.seatbelt,
+                    color: seatBelt ? Colors.amber : Colors.white,
+                    //MdiIcons.engine,
+                    //color: Colors.white,
                     size: 32,
                   ),
                 ),

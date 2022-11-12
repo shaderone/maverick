@@ -14,13 +14,15 @@ class DashCard extends StatelessWidget {
   final String cardTitle;
   final String cardContent;
   final IconData cardIcon;
-  final bool isTemp;
+  final bool? isTemp;
+  final bool isVoltage;
   const DashCard({
     Key? key,
     required this.cardTitle,
     required this.cardContent,
     required this.cardIcon,
     this.isTemp = false,
+    this.isVoltage = false,
   }) : super(key: key);
 
   @override
@@ -41,7 +43,7 @@ class DashCard extends StatelessWidget {
                   Text(cardTitle),
                   const SizedBox(height: 8),
                   Text(
-                    "$cardContent ${isTemp ? "°C" : "KM/H"}",
+                    "$cardContent ${isTemp == null ? "V" : isTemp! ? "°C" : "KM/H"}",
                     style: const TextStyle(color: primaryColor),
                   ),
                 ],
@@ -86,18 +88,17 @@ class _ChatPage extends State<ChatPage> {
       _streamController.stream.asBroadcastStream();
   late StreamSubscription _streamSubscription;
 
-  List<String> espData = [];
+  late List<String> espData;
 
   bool isConnecting = true;
   bool get isConnected => (connection?.isConnected ?? false);
 
   bool isDisconnecting = false;
-  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-
+    espData = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0"];
     BluetoothConnection.toAddress(widget.server.address).then((_connection) {
       print('Connected to the device');
       connection = _connection;
@@ -129,10 +130,11 @@ class _ChatPage extends State<ChatPage> {
 
     _streamSubscription = _stream.listen((event) {
       final result = event.split(",");
+      //manage this line -----------------------performance improvement
       setState(() {
         espData = result;
       });
-      log("data - ${result.toString()}");
+      //log("data - ${result.toString()}");
     });
   }
 
@@ -168,14 +170,6 @@ class _ChatPage extends State<ChatPage> {
     final List<Row> list = messages.map(
       (_message) {
         _streamController.sink.add(_message.text);
-        // setState(() {
-        //   isLoading = false;
-        // });
-        if (_message.text.isNotEmpty) {
-          setState(() {
-            isLoading = false;
-          });
-        }
         //_message.text -- contains data
         return Row(
           mainAxisAlignment: _message.whom == clientID
@@ -217,14 +211,14 @@ class _ChatPage extends State<ChatPage> {
           ),
         ),
         child: SafeArea(
-          child: isLoading
+          child: espData[0].isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       CircularProgressIndicator(strokeWidth: 2),
                       SizedBox(height: 20),
-                      Text("Establish connection...")
+                      Text("Establishing connection...")
                     ],
                   ),
                 )
@@ -275,30 +269,32 @@ class _ChatPage extends State<ChatPage> {
                                 cardTitle: "VOLTAGE",
                                 cardContent: espData[0].split(":").last,
                                 cardIcon: MdiIcons.flashTriangle,
-                                isTemp: true,
+                                isTemp: null,
                               ),
                               DashCard(
                                 cardTitle: "RANGE",
                                 cardContent: espData[1].split(":").last,
                                 cardIcon: MdiIcons.speedometer,
-                                isTemp: true,
+                                isTemp: false,
                               ),
                             ],
                           ),
                           SizedBox(
                             height: 530,
                             width: 530,
-                            child:
-                                //                        data - [
-                                // voltage: 40,  range: 39,  speed: 20,  battery_temp: 62,  motor_temp: 5,  battery_percentage: 9,  seat_belt: 0 odometer: 60]
-                                GaugeWidget(
-                                    speed: espData[2].split(":").last,
-                                    batteryPercent: double.parse(
-                                        espData[5].split(":").last),
-                                    seatBelt: espData[6].split(":").last == 0
-                                        ? false
-                                        : true,
-                                    odometer: "200"),
+                            child: GaugeWidget(
+                              speed: espData[2].split(":").last,
+                              batteryPercent:
+                                  double.parse(espData[7].split(":").last),
+                              seatBelt: espData[9].split(":").last == 0
+                                  ? false
+                                  : true,
+                              odometer: espData[5].split(":").last,
+                              handBrake: espData[8].split(":").last == 0
+                                  ? false
+                                  : true,
+                              gear: espData[6].split(":").last,
+                            ),
                           ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
