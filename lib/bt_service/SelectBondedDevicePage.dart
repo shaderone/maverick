@@ -39,6 +39,7 @@ class _SelectBondedDevicePage extends State<SelectBondedDevicePage> {
   // Availability
   StreamSubscription<BluetoothDiscoveryResult>? _discoveryStreamSubscription;
   bool _isDiscovering = false;
+  bool isloading = false;
 
   _SelectBondedDevicePage();
 

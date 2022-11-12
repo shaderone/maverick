@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,7 +58,7 @@ class DashCard extends StatelessWidget {
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
 
-  const ChatPage({required this.server});
+  const ChatPage({super.key, required this.server});
 
   @override
   _ChatPage createState() => _ChatPage();
@@ -72,7 +72,7 @@ class _Message {
 }
 
 class _ChatPage extends State<ChatPage> {
-  static final clientID = 0;
+  static const clientID = 0;
   BluetoothConnection? connection;
 
   List<_Message> messages = List<_Message>.empty(growable: true);
@@ -82,7 +82,8 @@ class _ChatPage extends State<ChatPage> {
   final ScrollController listScrollController = ScrollController();
 
   final StreamController<String> _streamController = StreamController();
-  late Stream<String> _stream = _streamController.stream.asBroadcastStream();
+  late final Stream<String> _stream =
+      _streamController.stream.asBroadcastStream();
   late StreamSubscription _streamSubscription;
 
   List<String> espData = [];
@@ -91,6 +92,7 @@ class _ChatPage extends State<ChatPage> {
   bool get isConnected => (connection?.isConnected ?? false);
 
   bool isDisconnecting = false;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -116,7 +118,7 @@ class _ChatPage extends State<ChatPage> {
         } else {
           print('Disconnected remotely!');
         }
-        if (this.mounted) {
+        if (mounted) {
           setState(() {});
         }
       });
@@ -126,31 +128,11 @@ class _ChatPage extends State<ChatPage> {
     });
 
     _streamSubscription = _stream.listen((event) {
-      //print("event $event info");
       final result = event.split(",");
-      //[temperature: 90,  speed: 100,  batteryLife: 10]
-      //log(result.toString());
-      //final res = result.split(",").toList();
-
-      //var resmap = {for (var v in result) v[0]: v[1]};
-
-      //final resMap = result.map((e) {
-      //  EspData(e.split(":").first, e.split(":").last);
-      //}).toList();
-
-      //Map<String, dynamic> espDataMap = {};
-      //for (var item in resMap) {
-      //  log(" item ----------- ${item.toString()}");
-      //}
-
-      //log(result.toString());
-      //final result = Map.fromEntries();
-      //List<String> tempList =
-      //    event.split(": ").where((item) => item == "temperature").toList();
-      //log(result.toString());
       setState(() {
-        espData = event.split(",");
+        espData = result;
       });
+      log("data - ${result.toString()}");
     });
   }
 
@@ -178,15 +160,22 @@ class _ChatPage extends State<ChatPage> {
     );
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Color(
-          0xFF1D202C,
-        ), //or set color with: Color(0xFF0000FF)
+        statusBarColor:
+            Color(0xFF1D202C), //or set color with: Color(0xFF0000FF)
       ),
     );
 
     final List<Row> list = messages.map(
       (_message) {
         _streamController.sink.add(_message.text);
+        // setState(() {
+        //   isLoading = false;
+        // });
+        if (_message.text.isNotEmpty) {
+          setState(() {
+            isLoading = false;
+          });
+        }
         //_message.text -- contains data
         return Row(
           mainAxisAlignment: _message.whom == clientID
@@ -213,7 +202,6 @@ class _ChatPage extends State<ChatPage> {
       },
     ).toList();
 
-    final serverName = widget.server.name ?? "Unknown";
     return Scaffold(
       //extendBodyBehindAppBar: true,
       backgroundColor: const Color(0xFF2A2F40),
@@ -229,94 +217,117 @@ class _ChatPage extends State<ChatPage> {
           ),
         ),
         child: SafeArea(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              //->later
-              //Positioned(
-              //  top: 25,
-              //  child: Column(
-              //    children: [
-              //      const Text(
-              //        "MUSIC",
-              //        style: TextStyle(color: Colors.white),
-              //      ),
-              //      const SizedBox(height: 10),
-              //      Card(
-              //        color: const Color(0xff1D202C),
-              //        child: SizedBox(
-              //          width: 100,
-              //          child: ClipRRect(
-              //            borderRadius: BorderRadius.circular(10),
-              //            child: const LinearProgressIndicator(
-              //              value: 0.4,
-              //              backgroundColor: Color(0xff1D202C),
-              //              color: Colors.blue,
-              //              minHeight: 10,
-              //            ),
-              //          ),
-              //        ),
-              //      ),
-              //    ],
-              //  ),
-              //),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
+          child: isLoading
+              ? Center(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      CircularProgressIndicator(strokeWidth: 2),
+                      SizedBox(height: 20),
+                      Text("Establish connection...")
+                    ],
+                  ),
+                )
+              : SizedBox(
+                  child: Stack(
+                    alignment: Alignment.center,
                     children: [
-                      const Text(
-                        "ESTIMATIONS",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 10),
-                      DashCard(
-                        cardTitle: "VOLTAGE",
-                        cardContent: espData[0].split(":").last.trim(),
-                        cardIcon: MdiIcons.flashTriangle,
-                        isTemp: true,
-                      ),
-                      DashCard(
-                        cardTitle: "MILAGE",
-                        cardContent: espData[1].split(":").last.trim(),
-                        cardIcon: MdiIcons.speedometer,
-                        isTemp: true,
+                      //->later
+                      //Positioned(
+                      //  top: 25,
+                      //  child: Column(
+                      //    children: [
+                      //      const Text(
+                      //        "MUSIC",
+                      //        style: TextStyle(color: Colors.white),
+                      //      ),
+                      //      const SizedBox(height: 10),
+                      //      Card(
+                      //        color: const Color(0xff1D202C),
+                      //        child: SizedBox(
+                      //          width: 100,
+                      //          child: ClipRRect(
+                      //            borderRadius: BorderRadius.circular(10),
+                      //            child: const LinearProgressIndicator(
+                      //              value: 0.4,
+                      //              backgroundColor: Color(0xff1D202C),
+                      //              color: Colors.blue,
+                      //              minHeight: 10,
+                      //            ),
+                      //          ),
+                      //        ),
+                      //      ),
+                      //    ],
+                      //  ),
+                      //),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "ESTIMATIONS",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              SizedBox(height: 10),
+                              DashCard(
+                                cardTitle: "VOLTAGE",
+                                cardContent: espData[0].split(":").last,
+                                cardIcon: MdiIcons.flashTriangle,
+                                isTemp: true,
+                              ),
+                              DashCard(
+                                cardTitle: "RANGE",
+                                cardContent: espData[1].split(":").last,
+                                cardIcon: MdiIcons.speedometer,
+                                isTemp: true,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 530,
+                            width: 530,
+                            child:
+                                //                        data - [
+                                // voltage: 40,  range: 39,  speed: 20,  battery_temp: 62,  motor_temp: 5,  battery_percentage: 9,  seat_belt: 0 odometer: 60]
+                                GaugeWidget(
+                                    speed: espData[2].split(":").last,
+                                    batteryPercent: double.parse(
+                                        espData[5].split(":").last),
+                                    seatBelt: espData[6].split(":").last == 0
+                                        ? false
+                                        : true,
+                                    odometer: "200"),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "TEMPERATURES",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(height: 10),
+                              DashCard(
+                                cardTitle: "BATTERY",
+                                cardContent: espData[3].split(":").last,
+                                cardIcon: MdiIcons.sunThermometer,
+                                isTemp: true,
+                              ),
+                              DashCard(
+                                cardTitle: "MOTOR",
+                                cardContent: espData[4].split(":").last,
+                                cardIcon: MdiIcons.sunThermometer,
+                                isTemp: true,
+                              ),
+                              //SizedBox(height: 10),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 530,
-                    width: 530,
-                    child: GaugeWidget(),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "TEMPERATURES",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(height: 10),
-                      DashCard(
-                        cardTitle: "BATTERY",
-                        cardContent: espData[2].split(":").last.trim(),
-                        cardIcon: MdiIcons.sunThermometer,
-                        isTemp: true,
-                      ),
-                      DashCard(
-                        cardTitle: "MOTOR",
-                        cardContent: espData[1].split(":").last.trim(),
-                        cardIcon: MdiIcons.sunThermometer,
-                        isTemp: true,
-                      ),
-                      //SizedBox(height: 10),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
         ),
       ),
     );
@@ -401,9 +412,3 @@ class _ChatPage extends State<ChatPage> {
 
 // data modal
 
-class EspData {
-  String key;
-  String data;
-
-  EspData(this.key, this.data);
-}

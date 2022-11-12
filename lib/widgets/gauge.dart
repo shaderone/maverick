@@ -4,22 +4,18 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:maverick/themes/theme.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class GaugeWidget extends StatefulWidget {
+class GaugeWidget extends StatelessWidget {
+  final String speed;
+  final double batteryPercent;
+  final String odometer;
+  final bool seatBelt;
   const GaugeWidget({
     Key? key,
+    required this.speed,
+    required this.batteryPercent,
+    required this.odometer,
+    required this.seatBelt,
   }) : super(key: key);
-
-  @override
-  State<GaugeWidget> createState() => _GaugeWidgetState();
-}
-
-class _GaugeWidgetState extends State<GaugeWidget> {
-  String batteryPercent = "83";
-  double batteryLevel = 83; // level for blue stroke
-  String speedometerValue = "0";
-  String gearPosition = "N";
-  String odometerValue = "220";
-
   @override
   Widget build(BuildContext context) {
     return SfRadialGauge(
@@ -47,12 +43,12 @@ class _GaugeWidgetState extends State<GaugeWidget> {
                   ),
                   Positioned(
                     top: 13,
-                    left: 50,
+                    left: 40,
                     child: Text(
-                      ("$batteryPercent%"),
+                      ("$batteryPercent %"),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
                   ),
@@ -97,12 +93,12 @@ class _GaugeWidgetState extends State<GaugeWidget> {
                     textBaseline: TextBaseline.alphabetic,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           const SizedBox(height: 10),
                           Text(
-                            speedometerValue,
+                            speed,
                             style: const TextStyle(
                               fontSize: 120,
                               fontWeight: FontWeight.bold,
@@ -132,14 +128,15 @@ class _GaugeWidgetState extends State<GaugeWidget> {
                             color: primaryColor,
                           ),
                         ),
-                        child: Center(
-                            child: Text(
-                          gearPosition,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
+                        child: const Center(
+                          child: Text(
+                            "N",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                            ),
                           ),
-                        )),
+                        ),
                       ),
                     ],
                   ),
@@ -244,7 +241,7 @@ class _GaugeWidgetState extends State<GaugeWidget> {
                 ),
                 child: Center(
                   child: Text(
-                    "$odometerValue KM",
+                    "$odometer KM",
                     style: const TextStyle(
                       color: Colors.white,
                     ),
@@ -292,7 +289,7 @@ class _GaugeWidgetState extends State<GaugeWidget> {
           ),
           pointers: <GaugePointer>[
             RangePointer(
-              value: batteryLevel,
+              value: batteryPercent,
               width: 23.5,
               cornerStyle: CornerStyle.bothCurve,
               color: primaryColor,
