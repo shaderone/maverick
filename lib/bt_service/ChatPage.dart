@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../themes/theme.dart';
@@ -40,11 +40,13 @@ class DashCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(cardTitle),
+                  Text(cardTitle, style: GoogleFonts.raleway()),
                   const SizedBox(height: 8),
                   Text(
                     "$cardContent ${isTemp == null ? "V" : isTemp! ? "°C" : "KM/H"}",
-                    style: const TextStyle(color: primaryColor),
+                    style: GoogleFonts.k2d(
+                        textStyle: const TextStyle(
+                            color: primaryColor, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -262,9 +264,12 @@ class _ChatPage extends State<ChatPage> {
                             children: [
                               Text(
                                 "ESTIMATIONS",
-                                style: TextStyle(color: Colors.white),
+                                style: GoogleFonts.k2d(
+                                    textStyle: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               DashCard(
                                 cardTitle: "VOLTAGE",
                                 cardContent: espData[0].split(":").last,
@@ -299,9 +304,13 @@ class _ChatPage extends State<ChatPage> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
+                              Text(
                                 "TEMPERATURES",
-                                style: TextStyle(color: Colors.white),
+                                style: GoogleFonts.k2d(
+                                  textStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                               const SizedBox(height: 10),
                               DashCard(

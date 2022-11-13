@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:maverick/themes/theme.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -46,13 +47,16 @@ class GaugeWidget extends StatelessWidget {
                     width: 135,
                   ),
                   Positioned(
-                    top: 13,
+                    top: 10,
                     left: 40,
                     child: Text(
                       ("$batteryPercent %"),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
+                      style: GoogleFonts.k2d(
+                        textStyle: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -94,7 +98,7 @@ class GaugeWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 303,
+                    width: 270,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       textBaseline: TextBaseline.alphabetic,
@@ -106,21 +110,23 @@ class GaugeWidget extends StatelessWidget {
                             const SizedBox(height: 10),
                             Text(
                               speed,
-                              style: const TextStyle(
-                                fontSize: 120,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                              style: GoogleFonts.odibeeSans(
+                                textStyle: const TextStyle(
+                                  fontSize: 120,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                            const Text(
-                              'KM/H',
-                              style: TextStyle(
-                                height: 0.01,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFfB4B9CB),
-                              ),
-                            ),
+                            Text('KM/H',
+                                style: GoogleFonts.odibeeSans(
+                                  textStyle: const TextStyle(
+                                    height: 0.01,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFfB4B9CB),
+                                  ),
+                                )),
                           ],
                         ),
                         const SizedBox(width: 20),
@@ -140,9 +146,11 @@ class GaugeWidget extends StatelessWidget {
                               padding: const EdgeInsets.only(right: 10),
                               child: Text(
                                 gear,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
+                                style: GoogleFonts.k2d(
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 40,
+                                  ),
                                 ),
                               ),
                             ),
@@ -257,9 +265,9 @@ class GaugeWidget extends StatelessWidget {
                 child: Center(
                   child: Text(
                     "$odometer KM",
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
+                    style: GoogleFonts.k2d(
+                        textStyle: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
@@ -267,13 +275,8 @@ class GaugeWidget extends StatelessWidget {
               positionFactor: 0.8,
             ),
             const GaugeAnnotation(
-              widget: Text(
-                '0%',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              widget: ChargeText(
+                text: "0%",
               ),
               // angle: 146,
               angle: 141,
@@ -281,14 +284,7 @@ class GaugeWidget extends StatelessWidget {
               // positionFactor: 1.30,
             ),
             const GaugeAnnotation(
-              widget: Text(
-                '100%',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+              widget: ChargeText(text: "100%"),
               // angle: 146,
               angle: 36,
               positionFactor: 1.25,
@@ -312,6 +308,28 @@ class GaugeWidget extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+}
+
+class ChargeText extends StatelessWidget {
+  final String text;
+  const ChargeText({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: GoogleFonts.k2d(
+        textStyle: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
