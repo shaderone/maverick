@@ -3,4 +3,4 @@
 Dashboard for Maverick Car.
 
 ### ⚡UI
-<img src="https://i.ibb.co/JWWgwX98/maverics-dashboard.png](https://www.behance.net/gallery/232322319/EV-CAR-DASHBOARD" />
+<img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/c44dc3232322319.689a3299763e1.png" />
